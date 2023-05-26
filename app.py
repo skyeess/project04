@@ -1,3 +1,7 @@
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 import jwt
 import datetime
@@ -11,9 +15,15 @@ app.config["UPLOAD_FOLDER"] = "./static/profile_pics"
 
 from pymongo import MongoClient
 
-MONGODB_CONNECTION_STRING = "mongodb+srv://test:colosal@cluster0.pttqnas.mongodb.net/?retryWrites=true&w=majority"
-client = MongoClient(MONGODB_CONNECTION_STRING)
-db = client.dbproject4
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DB_NAME")
+
+client = MongoClient(MONGODB_URI)
+
+db = client[DB_NAME]
 
 SECRET_KEY = "SPARTA"
 
